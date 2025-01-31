@@ -8,13 +8,26 @@ import java.io.FileInputStream
 import jodd.http.HttpRequest
 
 class HttpsClient {
-    def token
-    def log
-    def sslContext
+    String token
+    String log
+    SSLContext sslContext
 
-    HttpsClient(log, token, String hostCertificate) {
+    HttpsClient(log, token, String host) {
         this.token = token
         this.log = log
+        String hostCertificate = null 
+
+        if (host.toLowerCase().startsWith("https")) {
+            if (host.toLowerCase().contains("143")) {
+                hostCertificate = "143.p12"
+            } else if (host.toLowerCase().contains("131")) {
+                hostCertificate = "131.p12"
+            } else if (host.toLowerCase().contains("23")) {
+                hostCertificate = "23.p12"
+            }
+        }
+        log "host Certificate ${hostCertificate}"
+
         this.sslContext = hostCertificate ? createSSLContext(hostCertificate) : null
        
     }
