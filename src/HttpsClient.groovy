@@ -12,7 +12,7 @@ class HttpsClient {
     def log
     def sslContext
 
-    HttpClient(log, token, String hostCertificate) {
+    HttpsClient(log, token, String hostCertificate) {
         this.token = token
         this.log = log
         this.sslContext = hostCertificate ? createSSLContext(hostCertificate) : null
