@@ -10,7 +10,6 @@ import jodd.http.HttpRequest
 class HttpsClient {
     String token
     String log
-    SSLContext sslContext
     String hostCertificate = null
 
     HttpsClient(log, token, String host) {
@@ -57,7 +56,7 @@ class HttpsClient {
         try {
             def response
             //debug "requesting -\nGET ${url}"
-            sslContext = this.createSSLContext()
+            SSLContext sslContext = this.createSSLContext()
             if(sslContext != null){
                 URL requestUrl = new URL(url)
                 HttpsURLConnection connection = (HttpsURLConnection) requestUrl.openConnection()
@@ -86,7 +85,7 @@ class HttpsClient {
         def response
         try {
             //debug "requesting -\nPOST ${url}"
-            sslContext = this.createSSLContext()
+            SSLContext sslContext = this.createSSLContext()
             if(sslContext != null){
                 URL requestUrl = new URL(url)
                 HttpsURLConnection connection = (HttpsURLConnection) requestUrl.openConnection()
@@ -126,7 +125,7 @@ class HttpsClient {
         try {
             //debug "requesting -\nPUT ${url}"
             def response
-            sslContext = this.createSSLContext()
+            SSLContext sslContext = this.createSSLContext()
             if(sslContext != null){
                 URL requestUrl = new URL(url)
                 HttpsURLConnection connection = (HttpsURLConnection) requestUrl.openConnection()
