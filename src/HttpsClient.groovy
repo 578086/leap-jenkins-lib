@@ -105,7 +105,7 @@ class HttpsClient {
 
                 int responseCode = connection.getResponseCode()
                 //debug "Response Code: ${responseCode}"
-                println response.responseCode
+                //println response.responseCode
                 response = connection.inputStream.text
             } else{
                 response = new HttpRequest().post(url)
