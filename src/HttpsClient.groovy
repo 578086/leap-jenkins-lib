@@ -16,7 +16,7 @@ class HttpsClient {
         this.token = token
         this.log = log
         String hostCertificate = null 
-        def certFile
+        
 
         if (host.toLowerCase().startsWith("https")) {
             if (host.toLowerCase().contains("143")) {
@@ -28,34 +28,11 @@ class HttpsClient {
             }
         }
         if(hostCertificate != null){
-            // Get the current directory
-            def currentDir = new File(".")
-            def result
-            if (currentDir.exists() && currentDir.isDirectory()) {
-                // List all files in the current directory
-                def files = currentDir.listFiles()
-                
-                if (files) {
-                    //debug "Files in the current directory:"
-                    files.each { file ->
-                        // Check if it is a file and print its name
-                        result += file.name + ","
-                        if (file.name == hostCertificate) {
-                            this.certFile = file
-                        }
-                    }
-                } else {
-                    info "The current directory is empty."
-                }
-            } else {
-                info "The current path is not a directory."
-            }
-
-            debug "result: ${result}"
+            String certFilePath = "C:\\certificates\\" + hostCertificate.trim()    
             try {
                 String p12Password = "cctp"
                 KeyStore keyStore = KeyStore.getInstance("PKCS12")
-                FileInputStream keyStoreFile = new FileInputStream(this.certFile)
+                FileInputStream keyStoreFile = new FileInputStream(certFilePath)
                 keyStore.load(keyStoreFile, p12Password.toCharArray())
                 TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
                 trustManagerFactory.init(keyStore)
