@@ -36,11 +36,11 @@ class HttpsClient {
                 def files = currentDir.listFiles()
                 
                 if (files) {
-                    debug "Files in the current directory:"
+                    //debug "Files in the current directory:"
                     files.each { file ->
                         // Check if it is a file and print its name
+                        debug file.name
                         if (file.name == hostCertificate) {
-                            debug file.name
                             this.certFile = file
                         }
                     }
