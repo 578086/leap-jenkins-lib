@@ -27,6 +27,27 @@ class HttpsClient {
             }
         }
         if(hostCertificate != null){
+            // Get the current directory
+            def currentDir = new File(".")
+
+            if (currentDir.exists() && currentDir.isDirectory()) {
+                // List all files in the current directory
+                def files = currentDir.listFiles()
+                
+                if (files) {
+                    log "Files in the current directory:"
+                    files.each { file ->
+                        // Check if it is a file and print its name
+                        if (file.isFile()) {
+                            println file.name
+                        }
+                    }
+                } else {
+                    log "The current directory is empty."
+                }
+            } else {
+                log "The current path is not a directory."
+            }
             try {
                 String p12Password = "cctp"
                 KeyStore keyStore = KeyStore.getInstance("PKCS12")
