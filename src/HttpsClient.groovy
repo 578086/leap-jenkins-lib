@@ -27,7 +27,8 @@ class HttpsClient {
         }
     }
 
-    createSSLContext(){
+    @SuppressWarnings("GroovyAssignabilityCheck")
+    public SSLContext createSSLContext(){
         String certFilePath = "C:\\certificates\\" + this.hostCertificate.trim()    
             try {
                 String p12Password = "cctp"
