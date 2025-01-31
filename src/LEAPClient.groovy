@@ -2,9 +2,11 @@
 
 class LEAPClient extends HttpsClient {
     private String exec_api
-
+    def log
+    
     LEAPClient(log, host, token) {
         super(log, token, host)
+        this.log = log
         this.exec_api = host.endsWith('execution') ? host : host + '/execution'
     }
 

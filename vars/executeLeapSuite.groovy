@@ -22,7 +22,7 @@ def call(suite, project,
     setPassed 0
     info "starting execution..."
 
-    def executionApi = new LEAPClient(info, host, token)
+    def executionApi = new LEAPClient(debug, host, token)
     info "custom mesg :  $executionApi"      
     def exec = executionApi.runSuite(suite, project)
     debug exec 
