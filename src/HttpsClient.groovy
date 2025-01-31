@@ -28,32 +28,17 @@ class HttpsClient {
             }
         }
         if(hostCertificate != null){
-            // Get the current directory
-            def currentDir = new File(".")
+           def file = new File(hostCertificate)
 
-            if (currentDir.exists() && currentDir.isDirectory()) {
-                // List all files in the current directory
-                def files = currentDir.listFiles()
-                
-                if (files) {
-                    info "Files in the current directory:"
-                    files.each { file ->
-                        // Check if it is a file and print its name
-                        if (file.name == hostCertificate) {
-                            info file.name
-                            this.certFile = file
-                        }
-                    }
-                } else {
-                    info "The current directory is empty."
-                }
-            } else {
-                info "The current path is not a directory."
+            // Check if the file exists
+            if (!file.exists()) {
+                debug "File not found: ${file.absolutePath}"
+                return
             }
             try {
                 String p12Password = "cctp"
                 KeyStore keyStore = KeyStore.getInstance("PKCS12")
-                FileInputStream keyStoreFile = new FileInputStream(this.certFile)
+                FileInputStream keyStoreFile = new FileInputStream(file)
                 keyStore.load(keyStoreFile, p12Password.toCharArray())
                 TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
                 trustManagerFactory.init(keyStore)
