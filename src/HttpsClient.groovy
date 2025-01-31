@@ -59,7 +59,7 @@ class HttpsClient {
     @SuppressWarnings("GroovyAssignabilityCheck")
     doGet(String url) {
         try {
-            debug "requesting -\nGET ${url}"
+            //debug "requesting -\nGET ${url}"
             if(sslContext != null){
                 URL requestUrl = new URL(url)
                 HttpsURLConnection connection = (HttpsURLConnection) requestUrl.openConnection()
@@ -69,24 +69,24 @@ class HttpsClient {
                 connection.setRequestMethod("GET")
 
                 int responseCode = connection.getResponseCode()
-                debug "Response Code: ${responseCode}"
+                //debug "Response Code: ${responseCode}"
                 def response = connection.inputStream.text
             } else{
                 def response = new HttpRequest().get(url)
                     .tokenAuthentication(token).acceptJson().acceptJson().send().bodyText()
             }
             
-            debug "response -\n${response}"
+            //debug "response -\n${response}"
             return new JsonSlurperClassic().parseText(response)
         } catch (Exception e) {
-            return e
+            log e
         }
     }
 
     @SuppressWarnings("GroovyAssignabilityCheck")
     doPost(String url, String data = null) {
         try {
-            debug "requesting -\nPOST ${url}"
+            //debug "requesting -\nPOST ${url}"
             if(sslContext != null){
                 URL requestUrl = new URL(url)
                 HttpsURLConnection connection = (HttpsURLConnection) requestUrl.openConnection()
@@ -103,7 +103,7 @@ class HttpsClient {
                 }
 
                 int responseCode = connection.getResponseCode()
-                debug "Response Code: ${responseCode}"
+                //debug "Response Code: ${responseCode}"
                 def response = connection.inputStream.text
             } else{
                 def response = new HttpRequest().post(url)
@@ -112,17 +112,17 @@ class HttpsClient {
             ).send().bodyText()
             }
             
-            debug "response -\n${response}"
+            //debug "response -\n${response}"
             return new JsonSlurperClassic().parseText(response)
         } catch (Exception e) {
-            return e
+            log e
         }
     }
 
     @SuppressWarnings("GroovyAssignabilityCheck")
     doPut(String url, def data = null) {
         try {
-            debug "requesting -\nPUT ${url}"
+            //debug "requesting -\nPUT ${url}"
             if(sslContext != null){
                 URL requestUrl = new URL(url)
                 HttpsURLConnection connection = (HttpsURLConnection) requestUrl.openConnection()
@@ -139,7 +139,7 @@ class HttpsClient {
                 }
 
                 int responseCode = connection.getResponseCode()
-                debug "Response Code: ${responseCode}"
+                //debug "Response Code: ${responseCode}"
                 def response = connection.inputStream.text
             } else{
                 def response = new HttpRequest().put(url)
@@ -147,10 +147,10 @@ class HttpsClient {
                     .body(JsonOutput.toJson(data))
                     .send().bodyText()
             }
-            debug "response -\n${response}"
+            //debug "response -\n${response}"
             return new JsonSlurperClassic().parseText(response)
         } catch (Exception e) {
-            return e
+            log e
         }
     }
 }
