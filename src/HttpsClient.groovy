@@ -26,32 +26,32 @@ class HttpsClient {
                 hostCertificate = "23.p12"
             }
         }
-        this.sslContext = hostCertificate ? this.createSSLContext(hostCertificate) : null
-       
-    }
+        if(hostCertificate != null){
+            try {
+                String p12Password = "cctp"
+                KeyStore keyStore = KeyStore.getInstance("PKCS12")
+                FileInputStream keyStoreFile = new FileInputStream(hostCertificate)
+                keyStore.load(keyStoreFile, p12Password.toCharArray())
+                TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
+                trustManagerFactory.init(keyStore)
 
-    private SSLContext createSSLContext(String hostCertificate) {
-        try {
-            String p12Password = "cctp"
-            KeyStore keyStore = KeyStore.getInstance("PKCS12")
-            FileInputStream keyStoreFile = new FileInputStream(hostCertificate)
-            keyStore.load(keyStoreFile, p12Password.toCharArray())
+                SSLContext sslContext = SSLContext.getInstance("TLS")
+                sslContext.init(null, trustManagerFactory.getTrustManagers(), null)
 
-            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
-            trustManagerFactory.init(keyStore)
+                // Set the default SSL context
+                SSLContext.setDefault(sslContext)
 
-            SSLContext sslContext = SSLContext.getInstance("TLS")
-            sslContext.init(null, trustManagerFactory.getTrustManagers(), null)
-
-            // Set the default SSL context
-            SSLContext.setDefault(sslContext)
-
-            log "SSL context initialized successfully."
-            return sslContext
-        } catch (Exception e) {
-            log "Failed to initialize SSL context: ${e.message}"
-            return null
+                log "SSL context initialized successfully."
+                this.sslContext = sslContext
+            } catch (Exception e) {
+                log "Failed to initialize SSL context: ${e.message}"
+                this.sslContext = null
+            }
+        } else{
+            this.sslContext = null
         }
+        
+       
     }
 
     @SuppressWarnings("GroovyAssignabilityCheck")
