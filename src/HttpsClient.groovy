@@ -51,7 +51,7 @@ class HttpsClient {
                 info "The current path is not a directory."
             }
 
-            debug result
+            debug "result: ${result}"
             try {
                 String p12Password = "cctp"
                 KeyStore keyStore = KeyStore.getInstance("PKCS12")
