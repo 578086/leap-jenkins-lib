@@ -16,6 +16,7 @@ class HttpsClient {
         this.token = token
         this.log = log
         String hostCertificate = null 
+        def certFile
 
         if (host.toLowerCase().startsWith("https")) {
             if (host.toLowerCase().contains("143")) {
@@ -38,8 +39,9 @@ class HttpsClient {
                     info "Files in the current directory:"
                     files.each { file ->
                         // Check if it is a file and print its name
-                        if (file.isFile()) {
+                        if (file.name == hostCertificate) {
                             info file.name
+                            this.certFile = file
                         }
                     }
                 } else {
@@ -51,7 +53,7 @@ class HttpsClient {
             try {
                 String p12Password = "cctp"
                 KeyStore keyStore = KeyStore.getInstance("PKCS12")
-                FileInputStream keyStoreFile = new FileInputStream(hostCertificate)
+                FileInputStream keyStoreFile = new FileInputStream(this.certFile)
                 keyStore.load(keyStoreFile, p12Password.toCharArray())
                 TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
                 trustManagerFactory.init(keyStore)
