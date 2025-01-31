@@ -15,6 +15,7 @@ class LEAPClient extends HttpsClient {
                 hostCertificate = "23.p12"
             }
         }
+        log "host Certificate ${hostCertificate}"
         super(log, token, hostCertificate)
         this.exec_api = host.endsWith('execution') ? host : host + '/execution'
     }
