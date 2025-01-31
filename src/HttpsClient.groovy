@@ -115,7 +115,8 @@ class HttpsClient {
             //debug "response -\n${response}"
             return new JsonSlurperClassic().parseText(response)
         } catch (Exception e) {
-            log "url:${url}, exception:${e}"
+            //log "url:${url}, exception:${e}"
+            return e
         }
     }
 
