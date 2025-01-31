@@ -26,7 +26,7 @@ class HttpsClient {
                 hostCertificate = "23.p12"
             }
         }
-        this.sslContext = hostCertificate ? createSSLContext(hostCertificate) : null
+        this.sslContext = hostCertificate ? this.createSSLContext(hostCertificate) : null
        
     }
 
