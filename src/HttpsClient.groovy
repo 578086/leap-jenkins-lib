@@ -26,8 +26,6 @@ class HttpsClient {
                 hostCertificate = "23.p12"
             }
         }
-        log "host Certificate ${hostCertificate}"
-
         this.sslContext = hostCertificate ? createSSLContext(hostCertificate) : null
        
     }
