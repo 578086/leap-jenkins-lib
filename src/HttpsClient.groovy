@@ -27,7 +27,7 @@ class HttpsClient {
         }
     }
 
-    private SSLContext createSSLContext(){
+    createSSLContext(){
         String certFilePath = "C:\\certificates\\" + this.hostCertificate.trim()    
             try {
                 String p12Password = "cctp"
@@ -56,7 +56,7 @@ class HttpsClient {
         try {
             def response
             //debug "requesting -\nGET ${url}"
-            sslContext = createSSLContext()
+            sslContext = this.createSSLContext()
             if(sslContext != null){
                 URL requestUrl = new URL(url)
                 HttpsURLConnection connection = (HttpsURLConnection) requestUrl.openConnection()
@@ -85,7 +85,7 @@ class HttpsClient {
         def response
         try {
             //debug "requesting -\nPOST ${url}"
-            sslContext = createSSLContext()
+            sslContext = this.createSSLContext()
             if(sslContext != null){
                 URL requestUrl = new URL(url)
                 HttpsURLConnection connection = (HttpsURLConnection) requestUrl.openConnection()
@@ -125,7 +125,7 @@ class HttpsClient {
         try {
             //debug "requesting -\nPUT ${url}"
             def response
-            sslContext = createSSLContext()
+            sslContext = this.createSSLContext()
             if(sslContext != null){
                 URL requestUrl = new URL(url)
                 HttpsURLConnection connection = (HttpsURLConnection) requestUrl.openConnection()
