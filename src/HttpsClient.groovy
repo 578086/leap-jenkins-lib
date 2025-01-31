@@ -85,6 +85,7 @@ class HttpsClient {
 
     @SuppressWarnings("GroovyAssignabilityCheck")
     doPost(String url, String data = null) {
+        def response
         try {
             //debug "requesting -\nPOST ${url}"
             if(sslContext != null){
@@ -104,15 +105,16 @@ class HttpsClient {
 
                 int responseCode = connection.getResponseCode()
                 //debug "Response Code: ${responseCode}"
-                def response = connection.inputStream.text
+                println response.responseCode
+                response = connection.inputStream.text
             } else{
-                def response = new HttpRequest().post(url)
+                response = new HttpRequest().post(url)
                     .tokenAuthentication(token).acceptJson().contentTypeJson().body(
                     data == null ? "" : JsonOutput.toJson(data)
             ).send().bodyText()
             }
             
-            //debug "response -\n${response}"
+            println "response -\n${response}"
             return new JsonSlurperClassic().parseText(response)
         } catch (Exception e) {
             //log "url:${url}, exception:${e}"
