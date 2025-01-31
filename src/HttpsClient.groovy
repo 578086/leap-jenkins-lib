@@ -30,7 +30,7 @@ class HttpsClient {
        
     }
 
-    private SSLContext createSSLContext(hostCertificate) {
+    private SSLContext createSSLContext(String hostCertificate) {
         try {
             String p12Password = "cctp"
             KeyStore keyStore = KeyStore.getInstance("PKCS12")
