@@ -59,6 +59,7 @@ class HttpsClient {
     @SuppressWarnings("GroovyAssignabilityCheck")
     doGet(String url) {
         try {
+            def response
             //debug "requesting -\nGET ${url}"
             if(sslContext != null){
                 URL requestUrl = new URL(url)
@@ -70,16 +71,16 @@ class HttpsClient {
 
                 int responseCode = connection.getResponseCode()
                 //debug "Response Code: ${responseCode}"
-                def response = connection.inputStream.text
+                response = connection.inputStream.text
             } else{
-                def response = new HttpRequest().get(url)
+                response = new HttpRequest().get(url)
                     .tokenAuthentication(token).acceptJson().acceptJson().send().bodyText()
             }
             
-            //debug "response -\n${response}"
+            println "response -\n${response}"
             return new JsonSlurperClassic().parseText(response)
         } catch (Exception e) {
-            log e
+            return e
         }
     }
 
@@ -126,6 +127,7 @@ class HttpsClient {
     doPut(String url, def data = null) {
         try {
             //debug "requesting -\nPUT ${url}"
+            def response
             if(sslContext != null){
                 URL requestUrl = new URL(url)
                 HttpsURLConnection connection = (HttpsURLConnection) requestUrl.openConnection()
@@ -143,17 +145,17 @@ class HttpsClient {
 
                 int responseCode = connection.getResponseCode()
                 //debug "Response Code: ${responseCode}"
-                def response = connection.inputStream.text
+                response = connection.inputStream.text
             } else{
-                def response = new HttpRequest().put(url)
+                response = new HttpRequest().put(url)
                     .tokenAuthentication(token).acceptJson().contentTypeJson()
                     .body(JsonOutput.toJson(data))
                     .send().bodyText()
             }
-            //debug "response -\n${response}"
+            println "response -\n${response}"
             return new JsonSlurperClassic().parseText(response)
         } catch (Exception e) {
-            log e
+            return e
         }
     }
 }
