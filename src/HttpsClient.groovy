@@ -35,18 +35,18 @@ class HttpsClient {
                 def files = currentDir.listFiles()
                 
                 if (files) {
-                    log "Files in the current directory:"
+                    info "Files in the current directory:"
                     files.each { file ->
                         // Check if it is a file and print its name
                         if (file.isFile()) {
-                            println file.name
+                            info file.name
                         }
                     }
                 } else {
-                    log "The current directory is empty."
+                    info "The current directory is empty."
                 }
             } else {
-                log "The current path is not a directory."
+                info "The current path is not a directory."
             }
             try {
                 String p12Password = "cctp"
