@@ -43,7 +43,7 @@ class HttpsClient {
                 // Set the default SSL context
                 SSLContext.setDefault(sslContext)
 
-                info "SSL context initialized successfully."
+                //info "SSL context initialized successfully."
                 this.sslContext = sslContext
             } catch (Exception e) {
                 info "Failed to initialize SSL context: ${e.message}"
