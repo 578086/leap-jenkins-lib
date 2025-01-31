@@ -9,12 +9,12 @@ import jodd.http.HttpRequest
 
 class HttpsClient {
     String token
-    String info
+    String log
     SSLContext sslContext
 
-    HttpsClient(info, token, String host) {
+    HttpsClient(log, token, String host) {
         this.token = token
-        this.info = info
+        this.log = log
         String hostCertificate = null 
         
 
@@ -43,10 +43,10 @@ class HttpsClient {
                 // Set the default SSL context
                 SSLContext.setDefault(sslContext)
 
-                //info "SSL context initialized successfully."
+                //log "SSL context initialized successfully."
                 this.sslContext = sslContext
             } catch (Exception e) {
-                info "Failed to initialize SSL context: ${e.message}"
+                log "Failed to initialize SSL context: ${e.message}"
                 this.sslContext = null
             }
         } else{
@@ -59,7 +59,7 @@ class HttpsClient {
     @SuppressWarnings("GroovyAssignabilityCheck")
     doGet(String url) {
         try {
-            info "requesting -\nGET ${url}"
+            log "requesting -\nGET ${url}"
             if(sslContext != null){
                 URL requestUrl = new URL(url)
                 HttpsURLConnection connection = (HttpsURLConnection) requestUrl.openConnection()
@@ -69,14 +69,14 @@ class HttpsClient {
                 connection.setRequestMethod("GET")
 
                 int responseCode = connection.getResponseCode()
-                info "Response Code: ${responseCode}"
+                log "Response Code: ${responseCode}"
                 def response = connection.inputStream.text
             } else{
                 def response = new HttpRequest().get(url)
                     .tokenAuthentication(token).acceptJson().acceptJson().send().bodyText()
             }
             
-            info "response -\n${response}"
+            log "response -\n${response}"
             return new JsonSlurperClassic().parseText(response)
         } catch (Exception e) {
             return e
@@ -86,7 +86,7 @@ class HttpsClient {
     @SuppressWarnings("GroovyAssignabilityCheck")
     doPost(String url, String data = null) {
         try {
-            info "requesting -\nPOST ${url}"
+            log "requesting -\nPOST ${url}"
             if(sslContext != null){
                 URL requestUrl = new URL(url)
                 HttpsURLConnection connection = (HttpsURLConnection) requestUrl.openConnection()
@@ -103,7 +103,7 @@ class HttpsClient {
                 }
 
                 int responseCode = connection.getResponseCode()
-                info "Response Code: ${responseCode}"
+                log "Response Code: ${responseCode}"
                 def response = connection.inputStream.text
             } else{
                 def response = new HttpRequest().post(url)
@@ -112,7 +112,7 @@ class HttpsClient {
             ).send().bodyText()
             }
             
-            info "response -\n${response}"
+            log "response -\n${response}"
             return new JsonSlurperClassic().parseText(response)
         } catch (Exception e) {
             return e
@@ -122,7 +122,7 @@ class HttpsClient {
     @SuppressWarnings("GroovyAssignabilityCheck")
     doPut(String url, def data = null) {
         try {
-            info "requesting -\nPUT ${url}"
+            log "requesting -\nPUT ${url}"
             if(sslContext != null){
                 URL requestUrl = new URL(url)
                 HttpsURLConnection connection = (HttpsURLConnection) requestUrl.openConnection()
@@ -139,7 +139,7 @@ class HttpsClient {
                 }
 
                 int responseCode = connection.getResponseCode()
-                info "Response Code: ${responseCode}"
+                log "Response Code: ${responseCode}"
                 def response = connection.inputStream.text
             } else{
                 def response = new HttpRequest().put(url)
@@ -147,7 +147,7 @@ class HttpsClient {
                     .body(JsonOutput.toJson(data))
                     .send().bodyText()
             }
-            info "response -\n${response}"
+            log "response -\n${response}"
             return new JsonSlurperClassic().parseText(response)
         } catch (Exception e) {
             return e
