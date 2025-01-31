@@ -11,24 +11,24 @@ class HttpsClient {
     String token
     String log
     SSLContext sslContext
+    String hostCertificate = null
 
     HttpsClient(log, token, String host) {
         this.token = token
         this.log = log
-        String hostCertificate = null 
-        
-
         if (host.toLowerCase().startsWith("https")) {
             if (host.toLowerCase().contains("143")) {
-                hostCertificate = "143.p12"
+                this.hostCertificate = "143.p12"
             } else if (host.toLowerCase().contains("131")) {
-                hostCertificate = "131.p12"
+                this.hostCertificate = "131.p12"
             } else if (host.toLowerCase().contains("23")) {
-                hostCertificate = "23.p12"
+                this.hostCertificate = "23.p12"
             }
         }
-        if(hostCertificate != null){
-            String certFilePath = "C:\\certificates\\" + hostCertificate.trim()    
+    }
+
+    private SSLContext createSSLContext(){
+        String certFilePath = "C:\\certificates\\" + this.hostCertificate.trim()    
             try {
                 String p12Password = "cctp"
                 KeyStore keyStore = KeyStore.getInstance("PKCS12")
@@ -44,16 +44,11 @@ class HttpsClient {
                 SSLContext.setDefault(sslContext)
 
                 //debug "SSL context initialized successfully."
-                this.sslContext = sslContext
+                return sslContext
             } catch (Exception e) {
                 debug "Failed to initialize SSL context: ${e.message}"
-                this.sslContext = null
+                return null
             }
-        } else{
-            this.sslContext = null
-        }
-        
-       
     }
 
     @SuppressWarnings("GroovyAssignabilityCheck")
@@ -61,6 +56,7 @@ class HttpsClient {
         try {
             def response
             //debug "requesting -\nGET ${url}"
+            sslContext = createSSLContext()
             if(sslContext != null){
                 URL requestUrl = new URL(url)
                 HttpsURLConnection connection = (HttpsURLConnection) requestUrl.openConnection()
@@ -89,6 +85,7 @@ class HttpsClient {
         def response
         try {
             //debug "requesting -\nPOST ${url}"
+            sslContext = createSSLContext()
             if(sslContext != null){
                 URL requestUrl = new URL(url)
                 HttpsURLConnection connection = (HttpsURLConnection) requestUrl.openConnection()
@@ -128,6 +125,7 @@ class HttpsClient {
         try {
             //debug "requesting -\nPUT ${url}"
             def response
+            sslContext = createSSLContext()
             if(sslContext != null){
                 URL requestUrl = new URL(url)
                 HttpsURLConnection connection = (HttpsURLConnection) requestUrl.openConnection()
