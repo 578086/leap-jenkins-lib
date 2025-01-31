@@ -1,10 +1,21 @@
 #!/usr/bin/groovy
 
-class LEAPClient extends HttpClient {
+class LEAPClient extends HttpsClient {
     private String exec_api
 
     LEAPClient(log, host, token) {
-        super(log, token)
+        String hostCertificate = null 
+
+        if (host.toLowerCase().startsWith("https")) {
+            if (host.toLowerCase().contains("143")) {
+                hostCertificate = "143.p12"
+            } else if (host.toLowerCase().contains("131")) {
+                hostCertificate = "131.p12"
+            } else if (host.toLowerCase().contains("23")) {
+                hostCertificate = "23.p12"
+            }
+        }
+        super(log, token, hostCertificate)
         this.exec_api = host.endsWith('execution') ? host : host + '/execution'
     }
 
